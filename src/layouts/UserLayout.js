@@ -30,7 +30,7 @@ const links = [
 
 const copyright = (
   <Fragment>
-    Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+    Copyright <Icon type="copyright" /> {new Date().getFullYear()} 华林证券互联网金融中心
   </Fragment>
 );
 
@@ -63,7 +63,7 @@ class UserLayout extends Component {
               <div className={styles.header}>
                 <Link to="/">
                   <img alt="logo" className={styles.logo} src={logo} />
-                  <span className={styles.title}>Ant Design</span>
+                  <span className={styles.title}>Chinalions Dev</span>
                 </Link>
               </div>
               <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>

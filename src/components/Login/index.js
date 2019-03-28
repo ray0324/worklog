@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Tabs } from 'antd';
+import { Form } from 'antd';
 import classNames from 'classnames';
 import LoginItem from './LoginItem';
-import LoginTab from './LoginTab';
+// import LoginTab from './LoginTab';
 import LoginSubmit from './LoginSubmit';
 import styles from './index.less';
 import LoginContext from './loginContext';
@@ -83,48 +83,18 @@ class Login extends Component {
 
   render() {
     const { className, children } = this.props;
-    const { type, tabs } = this.state;
-    const TabChildren = [];
-    const otherChildren = [];
-    React.Children.forEach(children, item => {
-      if (!item) {
-        return;
-      }
-      // eslint-disable-next-line
-      if (item.type.typeName === 'LoginTab') {
-        TabChildren.push(item);
-      } else {
-        otherChildren.push(item);
-      }
-    });
     return (
       <LoginContext.Provider value={this.getContext()}>
         <div className={classNames(className, styles.login)}>
-          <Form onSubmit={this.handleSubmit}>
-            {tabs.length ? (
-              <React.Fragment>
-                <Tabs
-                  animated={false}
-                  className={styles.tabs}
-                  activeKey={type}
-                  onChange={this.onSwitch}
-                >
-                  {TabChildren}
-                </Tabs>
-                {otherChildren}
-              </React.Fragment>
-            ) : (
-              children
-            )}
-          </Form>
+          <Form onSubmit={this.handleSubmit}>{children}</Form>
         </div>
       </LoginContext.Provider>
     );
   }
 }
 
-Login.Tab = LoginTab;
 Login.Submit = LoginSubmit;
+
 Object.keys(LoginItem).forEach(item => {
   Login[item] = LoginItem[item];
 });
