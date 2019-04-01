@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Card, Tag, Divider } from 'antd';
+import { Card } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import styles from './Center.less';
 
@@ -33,18 +33,6 @@ class Center extends PureComponent {
                   <i className={styles.group} />
                   {currentUser.group}
                 </p>
-                <p>
-                  <i className={styles.address} />
-                  {currentUser.geographic.province.label}
-                  {currentUser.geographic.city.label}
-                </p>
-              </div>
-              <Divider dashed />
-              <div className={styles.tags}>
-                <div className={styles.tagsTitle}>标签</div>
-                {currentUser.tags.map(item => (
-                  <Tag key={item.key}>{item.label}</Tag>
-                ))}
               </div>
             </div>
           ) : (

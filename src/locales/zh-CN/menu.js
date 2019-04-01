@@ -3,10 +3,16 @@ export default {
   'menu.login': '登录',
   'menu.register': '注册',
   'menu.register.result': '注册结果',
+
   'menu.dashboard': 'Dashboard',
   'menu.dashboard.analysis': '分析页',
   'menu.dashboard.monitor': '监控页',
   'menu.dashboard.workplace': '工作台',
+
+  'menu.overtime': '加班申请',
+  'menu.overtime.register': '登记',
+  'menu.overtime.query': '查询',
+
   'menu.form': '表单页',
   'menu.form.basicform': '基础表单',
   'menu.form.stepform': '分步表单',
@@ -14,6 +20,7 @@ export default {
   'menu.form.stepform.confirm': '分步表单（确认转账信息）',
   'menu.form.stepform.result': '分步表单（完成）',
   'menu.form.advancedform': '高级表单',
+
   'menu.list': '列表页',
   'menu.list.searchtable': '查询表格',
   'menu.list.basiclist': '标准列表',

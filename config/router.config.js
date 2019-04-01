@@ -20,27 +20,82 @@ export default [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
-      // dashboard
-      { path: '/', redirect: '/dashboard/analysis' },
+      // user
+      { path: '/', redirect: '/account/center' },
       {
-        path: '/dashboard',
-        name: 'dashboard',
-        icon: 'dashboard',
+        name: 'account',
+        icon: 'user',
+        path: '/account',
         routes: [
           {
-            path: '/dashboard/analysis',
-            name: 'analysis',
-            component: './Dashboard/Analysis',
+            path: '/account/center',
+            name: 'center',
+            component: './Account/Center/Center',
           },
           {
-            path: '/dashboard/monitor',
-            name: 'monitor',
-            component: './Dashboard/Monitor',
+            path: '/account/settings',
+            name: 'settings',
+            component: './Account/Settings/Info',
+            routes: [
+              {
+                path: '/account/settings',
+                redirect: '/account/settings/base',
+              },
+              {
+                path: '/account/settings/base',
+                component: './Account/Settings/BaseView',
+              },
+              {
+                path: '/account/settings/security',
+                component: './Account/Settings/SecurityView',
+              },
+            ],
+          },
+        ],
+      },
+      // forms
+      {
+        path: '/overtime',
+        icon: 'form',
+        name: 'overtime',
+        routes: [
+          { path: '/overtime', redirect: '/overtime/register' },
+          {
+            path: '/overtime/register',
+            name: 'register',
+            authority: ['admin'],
+            component: './Overtime/Register',
           },
           {
-            path: '/dashboard/workplace',
-            name: 'workplace',
-            component: './Dashboard/Workplace',
+            path: '/overtime/query',
+            name: 'query',
+            authority: ['admin'],
+            component: './Profile/BasicProfile',
+          },
+        ],
+      },
+      {
+        path: '/profile',
+        name: 'profile',
+        icon: 'profile',
+        routes: [
+          // profile
+          {
+            path: '/profile/basic',
+            name: 'basic',
+            component: './Profile/BasicProfile',
+          },
+          {
+            path: '/profile/basic/:id',
+            name: 'basic',
+            hideInMenu: true,
+            component: './Profile/BasicProfile',
+          },
+          {
+            path: '/profile/advanced',
+            name: 'advanced',
+            authority: ['admin'],
+            component: './Profile/AdvancedProfile',
           },
         ],
       },
@@ -139,31 +194,7 @@ export default [
           },
         ],
       },
-      {
-        path: '/profile',
-        name: 'profile',
-        icon: 'profile',
-        routes: [
-          // profile
-          {
-            path: '/profile/basic',
-            name: 'basic',
-            component: './Profile/BasicProfile',
-          },
-          {
-            path: '/profile/basic/:id',
-            name: 'basic',
-            hideInMenu: true,
-            component: './Profile/BasicProfile',
-          },
-          {
-            path: '/profile/advanced',
-            name: 'advanced',
-            authority: ['admin'],
-            component: './Profile/AdvancedProfile',
-          },
-        ],
-      },
+
       {
         name: 'result',
         icon: 'check-circle-o',
@@ -204,63 +235,6 @@ export default [
             name: 'trigger',
             hideInMenu: true,
             component: './Exception/TriggerException',
-          },
-        ],
-      },
-      {
-        name: 'account',
-        icon: 'user',
-        path: '/account',
-        routes: [
-          {
-            path: '/account/center',
-            name: 'center',
-            component: './Account/Center/Center',
-            routes: [
-              {
-                path: '/account/center',
-                redirect: '/account/center/articles',
-              },
-              {
-                path: '/account/center/articles',
-                component: './Account/Center/Articles',
-              },
-              {
-                path: '/account/center/applications',
-                component: './Account/Center/Applications',
-              },
-              {
-                path: '/account/center/projects',
-                component: './Account/Center/Projects',
-              },
-            ],
-          },
-          {
-            path: '/account/settings',
-            name: 'settings',
-            component: './Account/Settings/Info',
-            routes: [
-              {
-                path: '/account/settings',
-                redirect: '/account/settings/base',
-              },
-              {
-                path: '/account/settings/base',
-                component: './Account/Settings/BaseView',
-              },
-              {
-                path: '/account/settings/security',
-                component: './Account/Settings/SecurityView',
-              },
-              {
-                path: '/account/settings/binding',
-                component: './Account/Settings/BindingView',
-              },
-              {
-                path: '/account/settings/notification',
-                component: './Account/Settings/NotificationView',
-              },
-            ],
           },
         ],
       },

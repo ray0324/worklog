@@ -1,100 +1,87 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import { List } from 'antd';
-// import { getTimeDistance } from '@/utils/utils';
+import { Form, Input, Button } from 'antd';
+import { connect } from 'dva';
+import styles from './SecurityView.less';
 
-const passwordStrength = {
-  strong: (
-    <font className="strong">
-      <FormattedMessage id="app.settings.security.strong" defaultMessage="Strong" />
-    </font>
-  ),
-  medium: (
-    <font className="medium">
-      <FormattedMessage id="app.settings.security.medium" defaultMessage="Medium" />
-    </font>
-  ),
-  weak: (
-    <font className="weak">
-      <FormattedMessage id="app.settings.security.weak" defaultMessage="Weak" />
-      Weak
-    </font>
-  ),
-};
+const FormItem = Form.Item;
 
+@connect(({ user }) => ({
+  currentUser: user.currentUser,
+}))
+@Form.create()
 class SecurityView extends Component {
-  getData = () => [
-    {
-      title: formatMessage({ id: 'app.settings.security.password' }, {}),
-      description: (
-        <Fragment>
-          {formatMessage({ id: 'app.settings.security.password-description' })}：
-          {passwordStrength.strong}
-        </Fragment>
-      ),
-      actions: [
-        <a>
-          <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
-        </a>,
-      ],
-    },
-    {
-      title: formatMessage({ id: 'app.settings.security.phone' }, {}),
-      description: `${formatMessage(
-        { id: 'app.settings.security.phone-description' },
-        {}
-      )}：138****8293`,
-      actions: [
-        <a>
-          <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
-        </a>,
-      ],
-    },
-    {
-      title: formatMessage({ id: 'app.settings.security.question' }, {}),
-      description: formatMessage({ id: 'app.settings.security.question-description' }, {}),
-      actions: [
-        <a>
-          <FormattedMessage id="app.settings.security.set" defaultMessage="Set" />
-        </a>,
-      ],
-    },
-    {
-      title: formatMessage({ id: 'app.settings.security.email' }, {}),
-      description: `${formatMessage(
-        { id: 'app.settings.security.email-description' },
-        {}
-      )}：ant***sign.com`,
-      actions: [
-        <a>
-          <FormattedMessage id="app.settings.security.modify" defaultMessage="Modify" />
-        </a>,
-      ],
-    },
-    {
-      title: formatMessage({ id: 'app.settings.security.mfa' }, {}),
-      description: formatMessage({ id: 'app.settings.security.mfa-description' }, {}),
-      actions: [
-        <a>
-          <FormattedMessage id="app.settings.security.bind" defaultMessage="Bind" />
-        </a>,
-      ],
-    },
-  ];
+  handleSubmit = e => {
+    e.preventDefault();
+    const { form } = this.props;
+    form.validateFields((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+      console.log(values);
+    });
+  };
+
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('newpwd')) {
+      callback(formatMessage({ id: 'app.settings.security.password-confirm-diffrent' }));
+    } else {
+      callback();
+    }
+  };
 
   render() {
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
     return (
-      <Fragment>
-        <List
-          itemLayout="horizontal"
-          dataSource={this.getData()}
-          renderItem={item => (
-            <List.Item actions={item.actions}>
-              <List.Item.Meta title={item.title} description={item.description} />
-            </List.Item>
-          )}
-        />
-      </Fragment>
+      <div className={styles.SecurityView}>
+        <div className={styles.left}>
+          <Form layout="vertical" onSubmit={this.handleSubmit} hideRequiredMark>
+            <FormItem label={formatMessage({ id: 'app.settings.security.password-old' })}>
+              {getFieldDecorator('password', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'app.settings.security.password-old' }, {}),
+                  },
+                ],
+              })(<Input type="password" />)}
+            </FormItem>
+            <FormItem label={formatMessage({ id: 'app.settings.security.password-new' })}>
+              {getFieldDecorator('newpwd', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'app.settings.security.password-new' }, {}),
+                  },
+                ],
+              })(<Input type="password" />)}
+            </FormItem>
+            <FormItem label={formatMessage({ id: 'app.settings.security.password-confirm' })}>
+              {getFieldDecorator('newpwdconfirm', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'app.settings.security.password-confirm' }, {}),
+                  },
+                  {
+                    validator: this.compareToFirstPassword,
+                  },
+                ],
+              })(<Input type="password" />)}
+            </FormItem>
+
+            <Button type="primary" htmlType="submit">
+              <FormattedMessage
+                id="app.settings.security.password-update"
+                defaultMessage="Update Information"
+              />
+            </Button>
+          </Form>
+        </div>
+      </div>
     );
   }
 }
