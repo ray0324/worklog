@@ -1,6 +1,18 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
+export function querySelectedRecords(params) {
+  return request('/api/records/list', {
+    method: 'POST',
+    body: {
+      ...params,
+      token: 'token_abcdefg',
+    },
+  });
+}
+
+// ===========================================
+
 export async function queryProjectNotice() {
   return request('/api/project/notice');
 }

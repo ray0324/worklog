@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Button, Input, DatePicker, TimePicker, message, Popconfirm, Divider } from 'antd';
 import moment from 'moment';
@@ -31,7 +32,7 @@ class TableForm extends PureComponent {
 
   getRowByKey(key, newData) {
     const { data } = this.state;
-    return (newData || data).filter(item => item.key === key)[0];
+    return (newData || data).filter(item => item._id === key)[0];
   }
 
   toggleEditable = (e, key) => {
@@ -53,7 +54,7 @@ class TableForm extends PureComponent {
     const { data } = this.state;
     const newData = data.map(item => ({ ...item }));
     newData.push({
-      key: `NEW_TEMP_ID_${this.index}`,
+      _id: `NEW_TEMP_ID_${this.index}`,
       date: moment()
         .subtract(1, 'month')
         .startOf('month')
@@ -70,7 +71,7 @@ class TableForm extends PureComponent {
   remove(key) {
     const { data } = this.state;
     const { onChange } = this.props;
-    const newData = data.filter(item => item.key !== key);
+    const newData = data.filter(item => item._id !== key);
     this.setState({ data: newData });
     onChange(newData);
   }
@@ -141,7 +142,8 @@ class TableForm extends PureComponent {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'key',
+        dataIndex: '_id',
+        key: '_id',
         width: '5%',
         render: (text, record, idx) => <span>{idx + 1}</span>,
       },
@@ -149,7 +151,7 @@ class TableForm extends PureComponent {
         title: '日期',
         dataIndex: 'date',
         key: 'date',
-        width: '10%',
+        width: '15%',
         render: (text, record) => {
           if (record.editable) {
             return (
@@ -179,14 +181,14 @@ class TableForm extends PureComponent {
         title: '加班事项',
         dataIndex: 'desc',
         key: 'desc',
-        width: '50%',
+        width: '40%',
         render: (text, record) => {
           if (record.editable) {
             return (
               <Input
                 value={text}
-                onChange={e => this.handleFieldChange(e, 'desc', record.key)}
-                onKeyPress={e => this.handleKeyPress(e, record.key)}
+                onChange={e => this.handleFieldChange(e, 'desc', record._id)}
+                onKeyPress={e => this.handleKeyPress(e, record._id)}
                 placeholder="加班事项"
               />
             );
@@ -207,9 +209,9 @@ class TableForm extends PureComponent {
             if (record.isNew) {
               return (
                 <span>
-                  <a onClick={e => this.saveRow(e, record.key)}>添加</a>
+                  <a onClick={e => this.saveRow(e, record._id)}>添加</a>
                   <Divider type="vertical" />
-                  <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
+                  <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record._id)}>
                     <a>删除</a>
                   </Popconfirm>
                 </span>
@@ -217,17 +219,17 @@ class TableForm extends PureComponent {
             }
             return (
               <span>
-                <a onClick={e => this.saveRow(e, record.key)}>保存</a>
+                <a onClick={e => this.saveRow(e, record._id)}>保存</a>
                 <Divider type="vertical" />
-                <a onClick={e => this.cancel(e, record.key)}>取消</a>
+                <a onClick={e => this.cancel(e, record._id)}>取消</a>
               </span>
             );
           }
           return (
             <span>
-              <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
+              <a onClick={e => this.toggleEditable(e, record._id)}>编辑</a>
               <Divider type="vertical" />
-              <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
+              <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record._id)}>
                 <a>删除</a>
               </Popconfirm>
             </span>
@@ -244,6 +246,7 @@ class TableForm extends PureComponent {
           loading={loading}
           columns={columns}
           dataSource={data}
+          rowKey={(record, index) => index}
           pagination={false}
           rowClassName={record => (record.editable ? styles.editable : '')}
         />
