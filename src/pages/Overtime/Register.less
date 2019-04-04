@@ -10,20 +10,6 @@
   line-height: 22px;
 }
 
-.steps:global(.ant-steps) {
-  max-width: 750px;
-  margin: 16px auto;
-}
-
-.errorIcon {
-  margin-right: 24px;
-  color: @error-color;
-  cursor: pointer;
-  i {
-    margin-right: 4px;
-  }
-}
-
 .errorPopover {
   :global {
     .ant-popover-inner-content {
@@ -35,18 +21,34 @@
   }
 }
 
+.userNameField {
+  line-height: 32px;
+  span {
+    margin-right: 8px;
+  }
+}
+
+.datePickField {
+  span {
+    margin-right: 8px;
+  }
+}
+
 .errorListItem {
   padding: 8px 16px;
   list-style: none;
   border-bottom: 1px solid @border-color-split;
   cursor: pointer;
   transition: all 0.3s;
+
   &:hover {
     background: @primary-1;
   }
+
   &:last-child {
     border: 0;
   }
+
   .errorIcon {
     float: left;
     margin-top: 4px;
@@ -54,6 +56,7 @@
     padding-bottom: 22px;
     color: @error-color;
   }
+
   .errorField {
     margin-top: 2px;
     color: @text-color-secondary;
@@ -78,10 +81,12 @@
     .ant-form .ant-row:last-child .ant-form-item {
       margin-bottom: 24px;
     }
+
     .ant-table-thead > tr > th {
       font-weight: bold !important;
       background: #fff !important;
     }
+
     .ant-table td {
       transition: none !important;
     }

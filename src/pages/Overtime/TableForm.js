@@ -13,20 +13,32 @@ class TableForm extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.value,
+      data: props.data,
       loading: false,
-      /* eslint-disable-next-line react/no-unused-state */
-      value: props.value,
+      originData: props.data,
+      originSelectedMonth: props.selectedMonth, // 选择的月份
     };
   }
 
   static getDerivedStateFromProps(nextProps, preState) {
-    if (isEqual(nextProps.value, preState.value)) {
+    // 切换月份 更新数据
+    if (nextProps.selectedMonth !== preState.originSelectedMonth) {
+      return {
+        data: nextProps.data,
+        originData: nextProps.data,
+        originSelectedMonth: nextProps.selectedMonth,
+      };
+    }
+
+    if (isEqual(nextProps.data, preState.originData)) {
       return null;
     }
+
+    // 筛选过滤
+
     return {
-      data: nextProps.value,
-      value: nextProps.value,
+      data: nextProps.data,
+      originData: nextProps.data,
     };
   }
 
@@ -112,11 +124,12 @@ class TableForm extends PureComponent {
         });
         return;
       }
+      delete target.editable;
       delete target.isNew;
-      this.toggleEditable(e, key);
-      const { data } = this.state;
+      // this.toggleEditable(e, key);
+      // const { data } = this.state;
       const { onChange } = this.props;
-      onChange(data);
+      onChange(target);
       this.setState({
         loading: false,
       });

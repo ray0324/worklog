@@ -3,7 +3,6 @@
 import { message } from 'antd';
 import moment from 'moment';
 import {
-  fakeSubmitForm,
   querySelectedRecords,
   // createRecord
 } from '@/services/api';
@@ -17,17 +16,27 @@ export default {
   },
 
   effects: {
-    *submitOvertimeRecords({ payload }, { call }) {
-      yield call(fakeSubmitForm, payload);
-      message.success('提交成功');
-    },
-    *querySelectedRecords({ payload }, { call, put }) {
-      const { error_no, records } = yield call(querySelectedRecords, payload);
+    *querySelectedRecords(
+      {
+        payload: { selectedMonth },
+      },
+      { call, put }
+    ) {
+      const selected = selectedMonth.format('YYYY-MM');
+      console.log(selected);
+
+      const { error_no, records } = yield call(querySelectedRecords, { selected });
       if (parseInt(error_no) !== 0) {
         message.error('查询失败');
         return;
       }
-      yield put({ type: 'updateRecords', payload: records });
+      yield put({
+        type: 'queryRecords',
+        payload: {
+          records,
+          selectedMonth,
+        },
+      });
     },
     // *newReacd({ payload }, { call, put }) {
     //   const { error_no, record: newRecord } = yield call(createRecord, payload);
@@ -41,10 +50,16 @@ export default {
   },
 
   reducers: {
-    updateRecords(state, { payload }) {
+    queryRecords(
+      state,
+      {
+        payload: { records, selectedMonth },
+      }
+    ) {
       return {
         ...state,
-        records: payload,
+        records,
+        selectedMonth,
       };
     },
   },

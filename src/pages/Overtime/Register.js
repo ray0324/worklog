@@ -1,107 +1,40 @@
 import React, { PureComponent } from 'react';
-import { Card, Button, Form, DatePicker, Divider } from 'antd';
+import { Card, Row, Col, DatePicker, Divider } from 'antd';
 import { connect } from 'dva';
-import FooterToolbar from '@/components/FooterToolbar';
+// import FooterToolbar from '@/components/FooterToolbar';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TableForm from './TableForm';
 import styles from './Register.less';
 
 const { MonthPicker } = DatePicker;
 
-@connect(({ loading, overtime: { records, selectedMonth } }) => ({
-  submitting: loading.effects['overtime/submitOvertimeRecords'],
+@connect(({ overtime: { records, selectedMonth } }) => ({
   records,
   selectedMonth,
 }))
-@Form.create()
-class AdvancedForm extends PureComponent {
-  state = {
-    width: '100%',
-  };
-
+class OvertimeRegister extends PureComponent {
   constructor(props) {
     super(props);
-    const { dispatch, selectedMonth } = props;
-    dispatch({
-      type: 'overtime/querySelectedRecords',
-      payload: {
-        selected: selectedMonth.format('YYYY-MM'),
-      },
-    });
+    const { selectedMonth } = props;
+    this.onMonthChange(selectedMonth);
   }
 
-  componentDidMount() {
-    window.addEventListener('resize', this.resizeFooterToolbar, { passive: true });
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeFooterToolbar);
-  }
-
-  resizeFooterToolbar = () => {
-    requestAnimationFrame(() => {
-      const sider = document.querySelectorAll('.ant-layout-sider')[0];
-      if (sider) {
-        const width = `calc(100% - ${sider.style.width})`;
-        const { width: stateWidth } = this.state;
-        if (stateWidth !== width) {
-          this.setState({ width });
-        }
-      }
-    });
-  };
-
-  validate = () => {
-    const {
-      form: { validateFieldsAndScroll },
-      dispatch,
-    } = this.props;
-    validateFieldsAndScroll((error, values) => {
-      if (!error) {
-        // submit the values
-        dispatch({
-          type: 'overtime/submitOvertimeRecords',
-          payload: values,
-        });
-      }
-    });
-  };
-
-  onMonthChange = (date, dateString) => {
+  onMonthChange = selectedMonth => {
     const { dispatch } = this.props;
     dispatch({
       type: 'overtime/querySelectedRecords',
       payload: {
-        selected: dateString,
+        selectedMonth,
       },
     });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const { form, dispatch } = this.props;
-    form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-      console.log(values);
-      dispatch({
-        type: 'overtime/submitOvertimeRecords',
-        payload: values,
-      });
-    });
+  onDataChange = data => {
+    console.log(data);
   };
 
   render() {
-    const {
-      form: { getFieldDecorator },
-      submitting,
-      records,
-      selectedMonth,
-    } = this.props;
-    const { width } = this.state;
-    console.log(selectedMonth);
-
+    const { records, selectedMonth } = this.props;
     return (
       <PageHeaderWrapper
         title="加班申报表"
@@ -109,25 +42,34 @@ class AdvancedForm extends PureComponent {
         wrapperClassName={styles.advancedForm}
       >
         <Card>
-          <MonthPicker
-            onChange={this.onMonthChange}
-            defaultValue={selectedMonth}
-            format="YYYY-MM"
-            placeholder="Select month"
-          />
+          <Row>
+            <Col xs={24} sm={12}>
+              <div className={styles.userNameField}>
+                <span>姓名:</span> 李小斌
+              </div>
+            </Col>
+            <Col xs={24} sm={12}>
+              <div className={styles.datePickField}>
+                <span>月份:</span>
+                <MonthPicker
+                  onChange={this.onMonthChange}
+                  defaultValue={selectedMonth}
+                  format="YYYY-MM"
+                  placeholder="Select month"
+                />
+              </div>
+            </Col>
+          </Row>
           <Divider style={{ marginBottom: 32 }} />
-          {getFieldDecorator('records', {
-            initialValue: records,
-          })(<TableForm />)}
+          <TableForm
+            data={records}
+            selectedMonth={selectedMonth.format('YYYY-MM')}
+            onChange={this.onDataChange}
+          />
         </Card>
-        <FooterToolbar style={{ width }}>
-          <Button type="primary" onClick={this.handleSubmit} loading={submitting}>
-            提交
-          </Button>
-        </FooterToolbar>
       </PageHeaderWrapper>
     );
   }
 }
 
-export default AdvancedForm;
+export default OvertimeRegister;
