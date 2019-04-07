@@ -1,8 +1,42 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
 
+// 查询加班记录
 export function querySelectedRecords(params) {
   return request('/api/records/list', {
+    method: 'POST',
+    body: {
+      ...params,
+      token: 'token_abcdefg',
+    },
+  });
+}
+
+// 创建一条新的加班记录
+export function createNewRecord(params) {
+  return request('/api/records/create', {
+    method: 'POST',
+    body: {
+      ...params,
+      token: 'token_abcdefg',
+    },
+  });
+}
+
+// 创建一条新的加班记录
+export function updateRecord(params) {
+  return request('/api/records/update', {
+    method: 'POST',
+    body: {
+      ...params,
+      token: 'token_abcdefg',
+    },
+  });
+}
+
+// 删除加班记录
+export function removeRecord(params) {
+  return request('/api/records/remove', {
     method: 'POST',
     body: {
       ...params,

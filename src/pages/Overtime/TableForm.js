@@ -5,6 +5,8 @@ import moment from 'moment';
 import isEqual from 'lodash/isEqual';
 import styles from './Register.less';
 
+const prefix = 'NEW_TEMP_ID_';
+
 class TableForm extends PureComponent {
   index = 0;
 
@@ -34,10 +36,11 @@ class TableForm extends PureComponent {
       return null;
     }
 
-    // 筛选过滤
+    const tmp = preState.data.filter(item => item.editable);
 
+    // 筛选过滤
     return {
-      data: nextProps.data,
+      data: [...nextProps.data, ...tmp],
       originData: nextProps.data,
     };
   }
@@ -66,7 +69,7 @@ class TableForm extends PureComponent {
     const { data } = this.state;
     const newData = data.map(item => ({ ...item }));
     newData.push({
-      _id: `NEW_TEMP_ID_${this.index}`,
+      _id: `${prefix}${this.index}`,
       date: moment()
         .subtract(1, 'month')
         .startOf('month')
@@ -83,9 +86,15 @@ class TableForm extends PureComponent {
   remove(key) {
     const { data } = this.state;
     const { onChange } = this.props;
-    const newData = data.filter(item => item._id !== key);
-    this.setState({ data: newData });
-    onChange(newData);
+    const target = data.filter(item => item._id === key)[0];
+    if (target.isNew) {
+      const newData = data.filter(item => item._id !== key);
+      this.setState({
+        data: newData,
+      });
+      return;
+    }
+    onChange({ type: 'remove', data: target });
   }
 
   handleKeyPress(e, key) {
@@ -94,12 +103,13 @@ class TableForm extends PureComponent {
     }
   }
 
-  handleFieldChange(e, fieldName, key) {
+  handleFieldChange(value, fieldName, key) {
     const { data } = this.state;
     const newData = data.map(item => ({ ...item }));
     const target = this.getRowByKey(key, newData);
     if (target) {
-      target[fieldName] = e.target.value;
+      target[fieldName] = value;
+      console.log(target);
       this.setState({ data: newData });
     }
   }
@@ -124,12 +134,24 @@ class TableForm extends PureComponent {
         });
         return;
       }
+
+      const { onChange } = this.props;
+
+      if (target.isNew) {
+        onChange({
+          type: 'create',
+          data: target,
+        });
+      } else {
+        onChange({
+          type: 'update',
+          data: target,
+        });
+      }
+
       delete target.editable;
       delete target.isNew;
-      // this.toggleEditable(e, key);
-      // const { data } = this.state;
-      const { onChange } = this.props;
-      onChange(target);
+
       this.setState({
         loading: false,
       });
@@ -172,6 +194,7 @@ class TableForm extends PureComponent {
                 placeholder="日期"
                 defaultValue={moment(text, 'YYYY-MM-DD')}
                 format="YYYY-MM-DD"
+                onChange={(date, dateStr) => this.handleFieldChange(dateStr, 'date', record._id)}
               />
             );
           }
@@ -185,7 +208,13 @@ class TableForm extends PureComponent {
         width: '10%',
         render: (text, record) => {
           if (record.editable) {
-            return <TimePicker defaultValue={moment(text, 'HH:mm')} format="HH:mm" />;
+            return (
+              <TimePicker
+                defaultValue={moment(text, 'HH:mm')}
+                format="HH:mm"
+                onChange={(time, timeStr) => this.handleFieldChange(timeStr, 'time', record._id)}
+              />
+            );
           }
           return text;
         },
@@ -200,7 +229,7 @@ class TableForm extends PureComponent {
             return (
               <Input
                 value={text}
-                onChange={e => this.handleFieldChange(e, 'desc', record._id)}
+                onChange={e => this.handleFieldChange(e.target.value, 'desc', record._id)}
                 onKeyPress={e => this.handleKeyPress(e, record._id)}
                 placeholder="加班事项"
               />

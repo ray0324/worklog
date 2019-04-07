@@ -22,14 +22,12 @@ export default {
     res.json(
       mockjs.mock({
         error_no: 0,
-        record: [
-          {
-            _id: 1,
-            date: '@date("yyyy-MM-dd")',
-            time: '@time("H:m")',
-            desc: '@sentence',
-          },
-        ],
+        record: {
+          _id: '@natural',
+          date: '@date("yyyy-MM-dd")',
+          time: '@time("H:m")',
+          desc: '@sentence',
+        },
       })
     );
   },

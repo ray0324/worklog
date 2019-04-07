@@ -22,15 +22,26 @@ class OvertimeRegister extends PureComponent {
   onMonthChange = selectedMonth => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'overtime/querySelectedRecords',
+      type: 'overtime/queryRecords',
       payload: {
         selectedMonth,
       },
     });
   };
 
-  onDataChange = data => {
-    console.log(data);
+  onDataChange = ({ type, data }) => {
+    const { dispatch } = this.props;
+    const dict = {
+      create: 'overtime/createRecord',
+      update: 'overtime/updateRecord',
+      remove: 'overtime/removeRecord',
+    };
+    dispatch({
+      type: dict[type],
+      payload: {
+        record: data,
+      },
+    });
   };
 
   render() {
@@ -43,12 +54,12 @@ class OvertimeRegister extends PureComponent {
       >
         <Card>
           <Row>
-            <Col xs={24} sm={12}>
+            <Col xs={24} sm={4}>
               <div className={styles.userNameField}>
                 <span>姓名:</span> 李小斌
               </div>
             </Col>
-            <Col xs={24} sm={12}>
+            <Col xs={24} sm={20}>
               <div className={styles.datePickField}>
                 <span>月份:</span>
                 <MonthPicker
