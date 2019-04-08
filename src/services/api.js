@@ -45,6 +45,17 @@ export function removeRecord(params) {
   });
 }
 
+// 查询工作日志
+export function queryWeekly(params) {
+  return request('/api/weekly', {
+    method: 'POST',
+    body: {
+      ...params,
+      token: 'token_abcdefg',
+    },
+  });
+}
+
 // ===========================================
 
 export async function queryProjectNotice() {

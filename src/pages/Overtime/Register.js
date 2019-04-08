@@ -1,10 +1,10 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import React, { PureComponent } from 'react';
-import { Card, Row, Col, DatePicker, Divider } from 'antd';
+import { Card, DatePicker } from 'antd';
 import { connect } from 'dva';
 // import FooterToolbar from '@/components/FooterToolbar';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import TableForm from './TableForm';
-import styles from './Register.less';
 
 const { MonthPicker } = DatePicker;
 
@@ -46,32 +46,19 @@ class OvertimeRegister extends PureComponent {
 
   render() {
     const { records, selectedMonth } = this.props;
+
+    const extra = (
+      <MonthPicker
+        onChange={this.onMonthChange}
+        defaultValue={selectedMonth}
+        format="YYYY年MM月"
+        placeholder="Select month"
+      />
+    );
+
     return (
-      <PageHeaderWrapper
-        title="加班申报表"
-        content="互联网金融部&amp;信息技术部加班申报表"
-        wrapperClassName={styles.advancedForm}
-      >
-        <Card>
-          <Row>
-            <Col xs={24} sm={4}>
-              <div className={styles.userNameField}>
-                <span>姓名:</span> 李小斌
-              </div>
-            </Col>
-            <Col xs={24} sm={20}>
-              <div className={styles.datePickField}>
-                <span>月份:</span>
-                <MonthPicker
-                  onChange={this.onMonthChange}
-                  defaultValue={selectedMonth}
-                  format="YYYY-MM"
-                  placeholder="Select month"
-                />
-              </div>
-            </Col>
-          </Row>
-          <Divider style={{ marginBottom: 32 }} />
+      <PageHeaderWrapper>
+        <Card title="加班申报表" extra={extra}>
           <TableForm
             data={records}
             selectedMonth={selectedMonth.format('YYYY-MM')}

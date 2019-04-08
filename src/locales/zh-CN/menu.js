@@ -13,6 +13,10 @@ export default {
   'menu.overtime.register': '登记',
   'menu.overtime.query': '查询',
 
+  'menu.weekly': '工作周报',
+  'menu.weekly.create': '登记',
+  'menu.weekly.query': '查询',
+
   'menu.form': '表单页',
   'menu.form.basicform': '基础表单',
   'menu.form.stepform': '分步表单',

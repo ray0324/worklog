@@ -66,85 +66,92 @@ export default [
             authority: ['admin'],
             component: './Overtime/Register',
           },
-          {
-            path: '/overtime/query',
-            name: 'query',
-            authority: ['admin'],
-            component: './Profile/BasicProfile',
-          },
         ],
       },
+      // 工作周报
       {
-        path: '/profile',
-        name: 'profile',
+        path: '/weekly',
         icon: 'profile',
+        name: 'weekly',
         routes: [
-          // profile
           {
-            path: '/profile/basic',
-            name: 'basic',
-            component: './Profile/BasicProfile',
-          },
-          {
-            path: '/profile/basic/:id',
-            name: 'basic',
-            hideInMenu: true,
-            component: './Profile/BasicProfile',
-          },
-          {
-            path: '/profile/advanced',
-            name: 'advanced',
-            authority: ['admin'],
-            component: './Profile/AdvancedProfile',
+            path: '/weekly/create',
+            name: 'create',
+            component: './Weekly/Create',
           },
         ],
       },
-      // forms
-      {
-        path: '/form',
-        icon: 'form',
-        name: 'form',
-        routes: [
-          {
-            path: '/form/basic-form',
-            name: 'basicform',
-            component: './Forms/BasicForm',
-          },
-          // {
-          //   path: '/form/step-form',
-          //   name: 'stepform',
-          //   component: './Forms/StepForm',
-          //   hideChildrenInMenu: true,
-          //   routes: [
-          //     {
-          //       path: '/form/step-form',
-          //       redirect: '/form/step-form/info',
-          //     },
-          //     {
-          //       path: '/form/step-form/info',
-          //       name: 'info',
-          //       component: './Forms/StepForm/Step1',
-          //     },
-          //     {
-          //       path: '/form/step-form/confirm',
-          //       name: 'confirm',
-          //       component: './Forms/StepForm/Step2',
-          //     },
-          //     {
-          //       path: '/form/step-form/result',
-          //       name: 'result',
-          //       component: './Forms/StepForm/Step3',
-          //     },
-          //   ],
-          // },
-          // {
-          //   path: '/form/advanced-form',
-          //   name: 'advancedform',
-          //   authority: ['admin'],
-          //   component: './Forms/AdvancedForm',
-          // },
-        ],
-      },
+      // {
+      //   path: '/profile',
+      //   name: 'profile',
+      //   icon: 'profile',
+      //   routes: [
+      //     // profile
+      //     {
+      //       path: '/profile/basic',
+      //       name: 'basic',
+      //       component: './Profile/BasicProfile',
+      //     },
+      //     {
+      //       path: '/profile/basic/:id',
+      //       name: 'basic',
+      //       hideInMenu: true,
+      //       component: './Profile/BasicProfile',
+      //     },
+      //     {
+      //       path: '/profile/advanced',
+      //       name: 'advanced',
+      //       authority: ['admin'],
+      //       component: './Profile/AdvancedProfile',
+      //     },
+      //   ],
+      // },
+
+      // {
+      //   path: '/form',
+      //   icon: 'form',
+      //   name: 'form',
+      //   routes: [
+      //     {
+      //       path: '/form/basic-form',
+      //       name: 'basicform',
+      //       component: './Forms/BasicForm',
+      //     },
+      //     {
+      //       path: '/form/step-form',
+      //       name: 'stepform',
+      //       component: './Forms/StepForm',
+      //       hideChildrenInMenu: true,
+      //       routes: [
+      //         {
+      //           path: '/form/step-form',
+      //           redirect: '/form/step-form/info',
+      //         },
+      //         {
+      //           path: '/form/step-form/info',
+      //           name: 'info',
+      //           component: './Forms/StepForm/Step1',
+      //         },
+      //         {
+      //           path: '/form/step-form/confirm',
+      //           name: 'confirm',
+      //           component: './Forms/StepForm/Step2',
+      //         },
+      //         {
+      //           path: '/form/step-form/result',
+      //           name: 'result',
+      //           component: './Forms/StepForm/Step3',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       path: '/form/advanced-form',
+      //       name: 'advancedform',
+      //       authority: ['admin'],
+      //       component: './Forms/AdvancedForm',
+      //     },
+      //   ],
+      // },
       // list
       // {
       //   path: '/list',
