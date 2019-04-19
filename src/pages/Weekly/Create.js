@@ -132,7 +132,9 @@ class AdvancedForm extends PureComponent {
         <Card
           title="工作周报"
           bordered={false}
-          extra={getFieldDecorator('week')(<WeekPicker initialValue={moment()} />)}
+          extra={getFieldDecorator('week')(
+            <WeekPicker format="YYYY年WW周" initialValue={moment()} />
+          )}
         >
           {getFieldDecorator('summary')(<TableForm title="本周工作" />)}
           {getFieldDecorator('plan')(<TableForm title="下周计划" />)}

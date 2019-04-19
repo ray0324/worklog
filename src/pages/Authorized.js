@@ -21,6 +21,7 @@ function AuthComponent({ children, location, routerData, status }) {
     });
     return authorities;
   };
+  console.log(getRouteAuthority(location.pathname, routerData));
   return (
     <Authorized
       authority={getRouteAuthority(location.pathname, routerData)}

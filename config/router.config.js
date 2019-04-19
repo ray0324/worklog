@@ -81,6 +81,9 @@ export default [
           },
         ],
       },
+      {
+        component: '404',
+      },
       // {
       //   path: '/profile',
       //   name: 'profile',
@@ -245,9 +248,6 @@ export default [
       //     },
       //   ],
       // },
-      {
-        component: '404',
-      },
     ],
   },
 ];
